@@ -1,0 +1,10 @@
+{
+  "devDependencies": {
+    "concurrently": "^7.1.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"npm start --prefix frontend\" \"nodemon backend/app.js\"",
+    "frontend": "cd frontend && npm install  && npm run build",
+    "backend": "cd backend && npm install"
+  }
+}
