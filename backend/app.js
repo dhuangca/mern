@@ -9,6 +9,10 @@ const placesRoutes = require("./routes/places-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
 
+const dotenv = require('dotenv');
+dotenv.config();
+const mongo_link = process.env.LINK;
+
 const app = express();
 
 app.use(bodyParser.json());
@@ -49,7 +53,8 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    `mongodb+srv://<username>:<password>@c<mongodb_service>/<dataabaseName>?retryWrites=true&w=majority`
+    // `mongodb+srv://<username>:<password>@c<mongodb_service>/<dataabaseName>?retryWrites=true&w=majority`
+    mongo_link
   )
   .then(() => {
     app.listen(5000);
