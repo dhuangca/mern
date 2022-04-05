@@ -1,0 +1,11 @@
+select {
+    font: inherit;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+  
+
+.error-text {
+    color: #ff0055;;
+    display: inline;
+  }

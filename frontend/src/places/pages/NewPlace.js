@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import Input from '../../shared/components/FormElements/Input';
+import DropDown from '../../shared/components/FormElements/DropDown';
 import Button from '../../shared/components/FormElements/Button';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
@@ -15,12 +16,18 @@ import { useHttpClient } from '../../shared/hooks/http-hook';
 import { AuthContext } from '../../shared/context/auth-context';
 import './PlaceForm.css';
 
+const place_types = ['', 'Pub', 'Hospital', 'Restaurant', 'Cafe', 'other'];
+
 const NewPlace = () => {
   const auth = useContext(AuthContext);
   const { isLoading, error, sendRequest, clearError } = useHttpClient();
   const [formState, inputHandler] = useForm(
     {
       title: {
+        value: '',
+        isValid: false
+      },
+      place_type: {
         value: '',
         isValid: false
       },
@@ -47,16 +54,18 @@ const NewPlace = () => {
     try {
       const formData = new FormData();
       formData.append('title', formState.inputs.title.value);
+      formData.append('place_type', formState.inputs.place_type.value);
       formData.append('description', formState.inputs.description.value);
       formData.append('address', formState.inputs.address.value);
       formData.append('image', formState.inputs.image.value);
+      // console.log(Array.from(formData.entries()));
       await sendRequest('http://localhost:5000/api/places', 'POST', formData, {
         Authorization: 'Bearer ' + auth.token
       });
       history.push('/');
     } catch (err) {}
   };
-
+  
   return (
     <React.Fragment>
       <ErrorModal error={error} onClear={clearError} />
@@ -71,6 +80,14 @@ const NewPlace = () => {
           errorText="Please enter a valid title."
           onInput={inputHandler}
         />
+        <DropDown 
+          id="place_type"
+          place_types={place_types}
+          label="Place Types"
+          validators={[VALIDATOR_REQUIRE()]}
+          errorText="invalid type"
+          onInput={inputHandler}
+           />
         <Input
           id="description"
           element="textarea"

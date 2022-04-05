@@ -3,3 +3,7 @@
 .vscode
 .DS_Store
 .env
+**/.env
+frontend/public/index.html
+yarn.lock
+backend/uploads/images

@@ -70,7 +70,7 @@ const createPlace = async (req, res, next) => {
     );
   }
 
-  const { title, description, address } = req.body;
+  const { title, description, address, place_type } = req.body;
 
   let coordinates;
   try {
@@ -83,9 +83,11 @@ const createPlace = async (req, res, next) => {
     title,
     description,
     address,
+    place_type,
     location: coordinates,
     image: req.file.path,
     creator: req.userData.userId
+    
   });
 
   let user;
@@ -104,7 +106,7 @@ const createPlace = async (req, res, next) => {
     return next(error);
   }
 
-  console.log(user);
+  console.log(createdPlace);
 
   try {
     const sess = await mongoose.startSession();
@@ -132,7 +134,7 @@ const updatePlace = async (req, res, next) => {
     );
   }
 
-  const { title, description } = req.body;
+  const { title, description, place_type } = req.body;
   const placeId = req.params.pid;
 
   let place;
@@ -153,6 +155,7 @@ const updatePlace = async (req, res, next) => {
 
   place.title = title;
   place.description = description;
+  place.place_type = place_type;
 
   try {
     await place.save();

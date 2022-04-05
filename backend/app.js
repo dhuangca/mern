@@ -9,12 +9,16 @@ const placesRoutes = require("./routes/places-routes");
 const usersRoutes = require("./routes/users-routes");
 const HttpError = require("./models/http-error");
 
+const dotenv = require('dotenv');
+dotenv.config();
+const mongo_link = process.env.LINK;
+
 const app = express();
 
 app.use(bodyParser.json());
 
-app.use("/uploads/images", express.static(path.join("uploads", "images")));
-
+app.use("/backend/uploads/images", express.static(path.join("backend/uploads", "images")));
+console.log(express.static(path.join("backend/uploads", "images")))
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -35,6 +39,7 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
+  // console.log(error);
   if (req.file) {
     fs.unlink(req.file.path, (err) => {
       console.log(err);
@@ -49,7 +54,8 @@ app.use((error, req, res, next) => {
 
 mongoose
   .connect(
-    `mongodb+srv://<username>:<password>@c<mongodb_service>/<dataabaseName>?retryWrites=true&w=majority`
+    // `mongodb+srv://<username>:<password>@c<mongodb_service>/<dataabaseName>?retryWrites=true&w=majority`
+    mongo_link
   )
   .then(() => {
     app.listen(5000);
