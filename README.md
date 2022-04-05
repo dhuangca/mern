@@ -65,7 +65,7 @@ npm run test
     "backend": "cd backend && npm install",
     "start": "node backend/app.js",
     "heroku-postbuild": "npm run frontend && npm run backend"
-  }
+   }
    ```
 2. modify api cal url from `http://localhost:5000` to url of `heroku` application
 3. modify `backend/app.js`, add the following
