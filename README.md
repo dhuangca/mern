@@ -76,6 +76,7 @@ npm run test
    });
    ```
 4. change port to 443
+5. add environment variables (mongodb link and goole map api)
 
 
 
