@@ -17,8 +17,8 @@ const app = express();
 
 app.use(bodyParser.json());
 
-app.use("/uploads/images", express.static(path.join("uploads", "images")));
-
+app.use("/backend/uploads/images", express.static(path.join("backend/uploads", "images")));
+console.log(express.static(path.join("backend/uploads", "images")))
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -39,6 +39,7 @@ app.use((req, res, next) => {
 });
 
 app.use((error, req, res, next) => {
+  // console.log(error);
   if (req.file) {
     fs.unlink(req.file.path, (err) => {
       console.log(err);
