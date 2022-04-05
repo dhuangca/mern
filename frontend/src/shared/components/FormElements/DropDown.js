@@ -11,7 +11,6 @@ const Dropdown = props => {
     const [isValid, setIsValid] = useState(props.initialValid || true);
 
     const changeHandler = event => {
-        console.log(event.target.value);
         setValue(event.target.value);
         setIsValid(validate(event.target.value, props.validators));
       };

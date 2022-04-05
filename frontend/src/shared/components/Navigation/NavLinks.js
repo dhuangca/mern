@@ -21,6 +21,11 @@ const NavLinks = (props) => {
       )}
       {auth.isLoggedIn && (
         <li>
+          <NavLink to={`/places`}>ALL PLACES</NavLink>
+        </li>
+      )}
+      {auth.isLoggedIn && (
+        <li>
           <NavLink to="/places/new">ADD PLACE</NavLink>
         </li>
       )}
@@ -34,6 +39,7 @@ const NavLinks = (props) => {
           <button onClick={auth.logout}>LOGOUT</button>
         </li>
       )}
+      
     </ul>
   );
 };
