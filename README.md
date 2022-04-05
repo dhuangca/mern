@@ -34,6 +34,11 @@ The dev environment is using `concurrently`.
 - add `.env` in root folder (this is only for dev)
 - add `.gitignore` in root folder 
 - add and modify `package.json` in root folder
+  ```json
+  "scripts": {
+    "dev": "concurrently \"npm start --prefix frontend\" \"nodemon backend/app.js\"",
+    }
+  ```
 - run dev envoriment
      `mpn run dev`
 
