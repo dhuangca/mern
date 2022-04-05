@@ -1,29 +1,77 @@
 ### Overview
 
-The provided codebase is a simple MERN application called “Our Places”. A user can sign up to create a profile in the app. Once the profile is created, the user can log in and create a “Place” record under their own profile. A Place record includes a place title, a description, a picture and an address. Note that the address verification takes places via the call to the Google Maps API.  The record owner can also edit their records (some fields) and delete their own records. Users can only see their own records and not the records created by other users. 
+The codes are based on a simple MERN application called “Our Places”.
 
-### Env
+Additional Features
+- enable users to add Place Type on the "Add Place" form
+- Add a new page to list all place post (pagination is included). 
 
-You will need to get a Google api token(GOOGLE_API_TOKEN) from https://developers.google.com/maps/documentation/embed/get-api-key, and put it in 2 places in this project. This API token allows verifying  the address that user enters on the "Create a Place" form via the Google Maps verification service, and also allows the front-end to find and display the location on the map based on the geominfo that is stored in the db.
 
-**You will need to include the mongodb address and the credential in the call to the API.**
+### Environment Variables
+- GOOGLE_API_TOKEN
+- connection string of mongodb
 
-#### Run Locally
+### Dev Environment (locally)
+The dev environment is using `concurrently`.
 
-##### DB
+- install  `concurrently`
+    `npm install -D concurrently`
 
-- This application support mongoDB, you can find schema in `/backend/models`.
-- Before invoking the API, you will need to have a mongodb setup and provide its credential to `/backend/app.js` => mongoose connection
-- You can find information about setting up MongoDB in [this documentation](https://hub.docker.com/_/mongo) in DockerHub and on the [MondoDB website](https://docs.cloudmanager.mongodb.com/tutorial/nav/manage-hosts/).
+- change image uploads path (backend) from `uploads/images` to `backend/uploads/images`
 
-##### Run api
+- install modules of frontend 
+    ``` bash
+    cd frontend
+    npm install
+    ```
 
-- go to the backend folder `cd backend`
-- install the dependency `npm install`
-- run express api `npm start`
+- install modules of backend 
+    ``` bash
+    cd backend
+    npm install
+    ```
 
-##### Run React front-end
+- add `.env` in root folder (this is only for dev)
+- add `.gitignore` in root folder 
+- add and modify `package.json` in root folder
+- run dev envoriment
+     `mpn run dev`
 
-- go to the backend folder `cd frontend`
-- install the dependency `npm install`
-- run express api `npm start`
+### testing
+
+testing is included with `jest` and `@testing-library`
+
+example testing file: `src/shared/components/FormElements/DropDown.test.js`
+
+test frontend:
+```bash
+cd frontend
+npm run test
+```
+
+
+### Deployment (heroku)
+
+1. modify `package.json` in root path
+   ```json
+   "scripts": {
+    "dev": "concurrently \"npm start --prefix frontend\" \"nodemon backend/app.js\"",
+    "frontend": "cd frontend && npm install  && npm run build",
+    "backend": "cd backend && npm install",
+    "start": "node backend/app.js",
+    "heroku-postbuild": "npm run frontend && npm run backend"
+  }
+   ```
+2. modify api cal url from `http://localhost:5000` to url of `heroku` application
+3. modify `backend/app.js`, add the following
+   ```javascript
+   app.use(express.static(path.resolve(__dirname, '../frontend/build')));
+   app.get('*', (req, res) => {
+     res.sendFile(path.resolve(__dirname, '../frontend/build', 'index.html'));
+   });
+   ```
+4. change port to 443
+
+
+
+other deployment option: `docker-compose`
