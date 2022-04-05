@@ -8,6 +8,49 @@ const getCoordsForAddress = require('../util/location');
 const Place = require('../models/place');
 const User = require('../models/user');
 
+const getPlaces = async (req, res, next) => {
+  let users;
+  try {
+    users = await User.find({}, '-password');
+  } catch (err) {
+    const error = new HttpError(
+      'Fetching users failed, please try again later.',
+      500
+    );
+    return next(error);
+  }
+  user_objects = users.map(user => user.toObject({ getters: true }))
+  const user_dict = {};
+  user_objects.forEach(user => 
+    user_dict[user.id] = user.name
+  );
+
+  let places;
+  try {
+    places = await Place.find();
+  } catch (err) {
+    const error = new HttpError(
+      'Something went wrong, could not find a place.',
+      500
+    );
+    return next(error);
+  }
+
+  if (!places) {
+    const error = new HttpError(
+      'Could not find place for the provided id.',
+      404
+    );
+    return next(error);
+  }
+  const place_objests = places.map(
+     place => place.toObject({ getters: true }));
+  place_objests.forEach(place => 
+      place.username = user_dict[place.creator]
+    );
+  res.json({ places: place_objests});
+};
+
 const getPlaceById = async (req, res, next) => {
   const placeId = req.params.pid;
 
@@ -226,3 +269,4 @@ exports.getPlacesByUserId = getPlacesByUserId;
 exports.createPlace = createPlace;
 exports.updatePlace = updatePlace;
 exports.deletePlace = deletePlace;
+exports.getPlaces = getPlaces;

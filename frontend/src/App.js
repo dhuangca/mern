@@ -10,6 +10,7 @@ import Users from './user/pages/Users';
 import NewPlace from './places/pages/NewPlace';
 import UserPlaces from './places/pages/UserPlaces';
 import UpdatePlace from './places/pages/UpdatePlace';
+import Posts from './places/pages/Posts';
 import Auth from './user/pages/Auth';
 import MainNavigation from './shared/components/Navigation/MainNavigation';
 import { AuthContext } from './shared/context/auth-context';
@@ -34,6 +35,9 @@ const App = () => {
         </Route>
         <Route path="/places/:placeId">
           <UpdatePlace />
+        </Route>
+        <Route path="/places">
+          <Posts />
         </Route>
         <Redirect to="/" />
       </Switch>
